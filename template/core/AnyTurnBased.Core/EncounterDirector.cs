@@ -12,6 +12,8 @@ namespace AnyTurnBased.Core
         /// <summary>Pause between enemy actions so the player can read them.</summary>
         public float EnemyActionDelaySeconds = 0.8f;
         public int Seed = Environment.TickCount;
+        /// <summary>Mechanics from game/battle.json (BattleConfig.FromJson); ctb-classic when the game has none.</summary>
+        public BattleConfig Battle = BattleConfig.Default;
     }
 
     /// <summary>
@@ -27,12 +29,19 @@ namespace AnyTurnBased.Core
         private readonly IEnemyAi _ai;
         private float _timer;
 
+        // Enemy action waiting for the player's dodge/parry (reactive.dodge-parry).
+        private ReactionTimer _reaction;
+        private IBattleAction _pendingAction;
+        private Combatant _pendingTarget;
+
         public DirectorState State { get; private set; } = DirectorState.Exploring;
         public BattleEngine Battle { get; private set; }
         public Action<string> Log = _ => { };
 
         public EncounterDirector(IGameAdapter game, IBattleUi ui, EncounterConfig cfg, IEnemyAi ai = null)
         {
+            if (cfg.Battle.Reactions != null && !(ui is IReactionUi))
+                throw new ArgumentException($"reactive.dodge-parry is on but {ui.GetType().Name} does not implement IReactionUi");
             _game = game;
             _ui = ui;
             _cfg = cfg;
@@ -62,8 +71,10 @@ namespace AnyTurnBased.Core
 
             var party = _game.GetPlayerParty();
             _game.FreezeWorld();
-            Battle = new BattleEngine(party.Concat(enemies), _rng);
+            Battle = new BattleEngine(party.Concat(enemies), _rng, _cfg.Battle);
             Log($"[AnyTurnBased] encounter: {string.Join(", ", Battle.All)}");
+            if (_cfg.Battle.Unsupported.Count > 0)
+                Log($"[AnyTurnBased] not in the core yet, ignored: {string.Join(", ", _cfg.Battle.Unsupported)}");
             _ui.Open(Battle);
             _timer = 0;
             State = DirectorState.InBattle;
@@ -73,6 +84,7 @@ namespace AnyTurnBased.Core
         private void Step(float dt)
         {
             if (Battle.Outcome != BattleOutcome.Ongoing) { Finish(); return; }
+            if (_reaction != null) { StepReaction(dt); return; }
 
             var actor = Battle.Current;
             IBattleAction action;
@@ -87,9 +99,41 @@ namespace AnyTurnBased.Core
                 if (_timer < _cfg.EnemyActionDelaySeconds) return;
                 _timer = 0;
                 (action, target) = _ai.Choose(Battle, actor);
+                if (Battle.IsReactable(action, target))
+                {
+                    var rules = _cfg.Battle.Reactions;
+                    float lead = rules.MinLead + (rules.MaxLead - rules.MinLead) * _rng.NextFloat();
+                    _reaction = new ReactionTimer(lead, rules);
+                    _pendingAction = action;
+                    _pendingTarget = target;
+                    ((IReactionUi)_ui).BeginReaction(actor, target, _reaction);
+                    return;
+                }
             }
 
-            var result = Battle.Execute(action, target);
+            Run(action, target, ReactionKind.None);
+        }
+
+        private void StepReaction(float dt)
+        {
+            var ui = (IReactionUi)_ui;
+            _reaction.Press(ui.PollReaction());
+            _reaction.Advance(dt);
+            if (!_reaction.Done) return;
+
+            var outcome = _reaction.Outcome;
+            ui.EndReaction(outcome);
+            var action = _pendingAction;
+            var target = _pendingTarget;
+            _reaction = null;
+            _pendingAction = null;
+            _pendingTarget = null;
+            Run(action, target, outcome);
+        }
+
+        private void Run(IBattleAction action, Combatant target, ReactionKind reaction)
+        {
+            var result = Battle.Execute(action, target, reaction);
             Log("[AnyTurnBased] " + result.Message);
             _ui.ShowResult(result);
             _game.PresentAction(result);

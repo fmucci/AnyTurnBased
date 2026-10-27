@@ -12,6 +12,10 @@ namespace AnyTurnBased.Core
         public int Damage;
         public int Healed;
         public bool Fled;
+        /// <summary>Dodge or Parry when the target avoided the hit (reactive.dodge-parry).</summary>
+        public ReactionKind Reaction;
+        /// <summary>The counterattack that followed a parry, if any.</summary>
+        public ActionResult Counter;
         public string Message;
     }
 
@@ -20,6 +24,8 @@ namespace AnyTurnBased.Core
         string Name { get; }
         TargetKind Targets { get; }
         int MpCost { get; }
+        /// <summary>Action points spent when economy.ap is on; ignored otherwise.</summary>
+        int ApCost { get; }
         ActionResult Resolve(Combatant actor, Combatant target, IRandom rng);
     }
 
@@ -40,6 +46,7 @@ namespace AnyTurnBased.Core
         public string Name => "Atacar";
         public TargetKind Targets => TargetKind.SingleEnemy;
         public int MpCost => 0;
+        public int ApCost => 0;
 
         public ActionResult Resolve(Combatant actor, Combatant target, IRandom rng)
         {
@@ -55,6 +62,7 @@ namespace AnyTurnBased.Core
         public string Name => "Defender";
         public TargetKind Targets => TargetKind.Self;
         public int MpCost => 0;
+        public int ApCost => 0;
 
         public ActionResult Resolve(Combatant actor, Combatant target, IRandom rng)
         {
@@ -70,11 +78,12 @@ namespace AnyTurnBased.Core
         public string Name { get; }
         public TargetKind Targets { get; }
         public int MpCost { get; }
+        public int ApCost { get; }
         public float Power { get; }
 
-        public SkillAction(string name, TargetKind targets, int mpCost, float power)
+        public SkillAction(string name, TargetKind targets, int mpCost, float power, int apCost = 0)
         {
-            Name = name; Targets = targets; MpCost = mpCost; Power = power;
+            Name = name; Targets = targets; MpCost = mpCost; Power = power; ApCost = apCost;
         }
 
         public ActionResult Resolve(Combatant actor, Combatant target, IRandom rng)
@@ -105,6 +114,7 @@ namespace AnyTurnBased.Core
         public string Name => "Huir";
         public TargetKind Targets => TargetKind.None;
         public int MpCost => 0;
+        public int ApCost => 0;
 
         public ActionResult Resolve(Combatant actor, Combatant target, IRandom rng)
         {

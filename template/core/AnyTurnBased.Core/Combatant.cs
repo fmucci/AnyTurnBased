@@ -30,6 +30,9 @@ namespace AnyTurnBased.Core
         public int StartHp { get; }
         public bool Defending { get; internal set; }
 
+        /// <summary>Action points (economy.ap). Stays 0 when the mechanic is off.</summary>
+        public int Ap { get; internal set; }
+
         /// <summary>CTB counter: lowest value acts next.</summary>
         internal long NextTurnAt;
 

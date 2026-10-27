@@ -73,7 +73,7 @@
         "start": { "type": "int", "default": 1 }, "max": { "type": "int", "default": 9 },
         "perTurn": { "type": "int", "default": 1 }, "onBasicAttack": { "type": "int", "default": 1 }, "onPerfectReaction": { "type": "int", "default": 1 }
       },
-      "core": "planned", "retrofit": "Reemplaza el mpCost actual o convive con él."
+      "core": "supported", "retrofit": "BattleConfig.Ap; las acciones declaran ApCost. Convive con mpCost. Solo los jugadores usan PA."
     },
     {
       "id": "economy.energy", "category": "economy", "name": "Energía por turno",
@@ -152,7 +152,7 @@
         "windowMs": { "type": "int", "default": 180 }, "parryWindowMs": { "type": "int", "default": 90 },
         "counterOnFullParry": { "type": "bool", "default": true }
       },
-      "core": "planned", "retrofit": "Sin animación nativa hay que mostrar una señal propia (barra o anillo en la UI). Con el mundo congelado no se ven las animaciones de ataque del juego."
+      "core": "supported", "retrofit": "ReactionTimer + IReactionUi: la UI del adapter dibuja la señal (barra) porque con el mundo congelado no se ven las animaciones de ataque del juego. Un golpe por ataque; el impacto cae entre 0,6 y 1,4 s."
     },
     {
       "id": "reactive.timed-hits", "category": "reactive", "name": "Golpes con timing",

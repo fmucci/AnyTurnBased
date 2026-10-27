@@ -52,19 +52,32 @@ Fuera de esta lista: Dispatch (narrativo) y el resto de la biblioteca, que no es
 
 Cada mecánica tiene un campo `core`:
 
-- **supported (12)**: CTB, una acción por turno, maná, menú, defender, huir, sin aviso, orden visible,
-  un personaje, por cercanía, con tecla, derrotar a todos.
+- **supported (14)**: CTB, una acción por turno, maná, puntos de acción, menú, defender, huir,
+  esquivar/parar, sin aviso, orden visible, un personaje, por cercanía, con tecla, derrotar a todos.
 - **partial (2)**: objetos (la poción es una habilidad, no usa el inventario real) y grupo (el motor acepta
   varios, los adapters devuelven solo al jugador).
-- **planned (24)**: no dependen del juego y se pueden programar en el core. Por ejemplo ATB, rondas, fases, PA,
-  energía, cartas, intenciones, esquivar/parar con una señal propia en la UI, quiebre y estados.
+- **planned (22)**: no dependen del juego y se pueden programar en el core. Por ejemplo ATB, rondas, fases,
+  energía, cartas, intenciones, golpes con timing, quiebre y estados.
 - **research (8)**: dependen de cada juego, como apuntado libre, cobertura, grilla, mover y actuar, o acción + ATB.
   Necesitan la cámara, la geometría o la navegación del juego estando congelado.
 - **reference (2)**: encuentros aleatorios y enemigos visibles; existen en los juegos relevados pero no
   aplican a una conversión.
 
+## Cómo lo usa el core
+
+- `BattleConfig.FromJson` lee `battle.json` sin dependencias (`MiniJson`) y se pasa en `EncounterConfig.Battle`.
+  Sin archivo, el default es `ctb-classic`.
+- Un modelo de tiempo que no sea `time.ctb` corta con `NotSupportedException`. Las demás mecánicas sin
+  implementar se listan en `BattleConfig.Unsupported` y el director las loguea al empezar cada batalla.
+- `economy.ap`: `ApRules`. Los jugadores ganan PA al empezar su turno, con el ataque básico y con una parada;
+  cada acción declara `ApCost` y `BattleEngine.CanAfford` dice si alcanza.
+- `reactive.dodge-parry`: cuando un enemigo ataca a un jugador, el director arma un `ReactionTimer` (impacto
+  entre 0,6 y 1,4 s) y le pasa el control a la UI, que tiene que implementar `IReactionUi`. Se permite una sola
+  pulsación. Esquivar anula el golpe; parar además da PA y un contraataque. Probado con tests (**observed**);
+  en Moonlighter 2 carga, pero falta jugarlo.
+
 ## Lo que esto no resuelve todavía
 
-- `battle.json` no lo lee nadie: el core sigue jugando CTB fijo. El siguiente paso es que `BattleEngine` reciba
-  un modelo de tiempo (`ITurnScheduler`: CTB, rondas, fases, ATB) y que las mecánicas `planned` entren de a una.
+- Solo hay CTB. El siguiente paso para FF9 es un `ITurnScheduler` (CTB, rondas, fases, ATB).
+- Los ataques de los enemigos son un solo golpe: no hay combos de varios golpes como en Expedition 33.
 - Las mecánicas de Expedition 33 y FF7 Rebirth salen del diseño público del juego, no de sus archivos.

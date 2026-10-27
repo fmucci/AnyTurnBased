@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 — 2026-10-27
+
+- El core lee `game/battle.json` (`BattleConfig`, sin dependencias). Modelos de tiempo sin implementar fallan
+  fuerte; mecánicas sin implementar se loguean.
+- Estilo Expedition 33: `economy.ap` (puntos de acción, `IBattleAction.ApCost`) y `reactive.dodge-parry`
+  (`ReactionTimer`, `IReactionUi`, contraataque al parar). Las dos pasan a `supported` en el catálogo.
+- Tests: 22/22 (antes 5).
+- Moonlighter 2: `battle.json` estilo Expedition 33, Q esquiva y E para, barra de timing en IMGUI. Carga en el
+  juego (**observed**); el combate sigue sin jugarse.
+
 ## 0.3.0 — 2026-10-27
 
 - `mechanics/`: base de mecánicas por turnos relevada en 9 juegos de la biblioteca (FF9, Expedition 33,
