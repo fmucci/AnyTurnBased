@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/fmucci/AnyTurnBased/mechanics/battle-config.schema.json",
+  "title": "AnyTurnBased battle config (game/battle.json)",
+  "description": "Mecánicas elegidas para un juego. Los ids salen de mechanics/catalog.json; scripts/check-mechanics.ps1 valida que existan.",
+  "type": "object",
+  "required": ["version", "time", "mechanics"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "const": 1 },
+    "game": { "type": "string", "description": "slug de game/game.json" },
+    "preset": { "type": "string", "description": "id de mechanics/presets.json usado como punto de partida" },
+    "time": { "type": "string", "pattern": "^time\\.[a-z0-9-]+$" },
+    "mechanics": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^(economy|actions|reactive|ai|defense|status|party|position|encounter|victory)\\.[a-z0-9-]+$" }
+    },
+    "params": {
+      "type": "object",
+      "description": "Valores por mecánica, con las claves de params del catálogo",
+      "additionalProperties": { "type": "object" }
+    },
+    "notes": { "type": "string", "description": "Lo que pidió la persona en sus palabras, sobre todo lo que no entra en el catálogo" }
+  }
+}

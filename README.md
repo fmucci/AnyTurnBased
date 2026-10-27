@@ -17,6 +17,8 @@ de la conexión con cada motor, que es específica.
   - `core/AnyTurnBased.Core`: motor por turnos en netstandard2.0 (sirve en Unity Mono, .NET 6+ y Godot .NET).
   - `adapters/<motor>`: plantillas de adapter (SMAPI/MonoGame, Unity+BepInEx, Unreal+UE4SS).
   - `game/game.json`: configuración del juego.
+- **`mechanics/`**: catálogo de mecánicas por turnos relevadas en juegos reales, presets y el esquema de
+  `game/battle.json`. La skill `/anytb-design` entrevista a la persona y elige las mecánicas (`docs/13`).
 - **`PLAYBOOK.md`**: el procedimiento que sigue un agente para convertir un juego nuevo. El resultado es
   un **repositorio aparte por juego**.
 
@@ -49,6 +51,7 @@ de la conexión con cada motor, que es específica.
 | 10 | Preguntas abiertas |
 | 11 | Fuentes |
 | 12 | Relevamiento de la biblioteca local |
+| 13 | Base de mecánicas por turnos (`mechanics/`) y la entrevista `anytb-design` |
 
 ## Exclusiones deliberadas
 

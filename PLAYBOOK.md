@@ -31,6 +31,10 @@
 **Done:** el repo existe, `game.json` tiene `engine`, `loader` e `installPath`, y el loader está instalado
 en el juego.
 
+Si hay una persona disponible, corré la skill `anytb-design` para que elija las mecánicas: escribe
+`game/battle.json` y lo valida con `scripts/check-mechanics.ps1` (`docs/13`). Sin persona, el default es el
+preset `ctb-classic`, que es lo único que hoy está completo en el core.
+
 ## 3. Bring-up: los seis hooks
 
 Implementá `IGameAdapter` en este orden. Cada paso tiene un log verificable.

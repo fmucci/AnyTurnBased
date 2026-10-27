@@ -1,0 +1,54 @@
+{
+  "presets": [
+    {
+      "id": "ctb-classic",
+      "name": "Turnos por velocidad (estilo FFX)",
+      "basedOn": [],
+      "summary": "Lo que hace hoy AnyTurnBased: orden por velocidad visible, una acción por turno, menú. Todo soportado.",
+      "time": "time.ctb",
+      "mechanics": ["economy.one-action", "economy.mp", "actions.menu", "actions.defend", "actions.flee", "ai.turn-order-preview", "party.solo", "encounter.proximity", "encounter.manual", "victory.defeat-all"]
+    },
+    {
+      "id": "ff9-atb",
+      "name": "ATB (estilo Final Fantasy IX)",
+      "basedOn": ["ff9"],
+      "summary": "Barras en tiempo real, modo Espera o Activo, Trance, filas, estados.",
+      "time": "time.atb",
+      "params": { "time.atb": { "mode": "wait" }, "economy.overdrive": { "chargeOn": "damage-taken" } },
+      "mechanics": ["economy.one-action", "economy.mp", "economy.overdrive", "actions.menu", "actions.items", "actions.defend", "actions.flee", "ai.hidden", "defense.weakness", "defense.hit-chance", "status.timed", "party.solo", "position.rows", "encounter.proximity", "encounter.first-strike", "victory.defeat-all"]
+    },
+    {
+      "id": "expedition33",
+      "name": "Turnos reactivos (estilo Expedition 33)",
+      "basedOn": ["expedition33"],
+      "summary": "Línea de turnos, puntos de acción, esquivar/parar en el turno enemigo, golpes con timing, quiebre.",
+      "time": "time.ctb",
+      "params": { "economy.ap": { "start": 1, "max": 9, "perTurn": 1, "onBasicAttack": 1, "onPerfectReaction": 1 } },
+      "mechanics": ["economy.ap", "economy.overdrive", "actions.menu", "actions.items", "actions.flee", "reactive.dodge-parry", "reactive.timed-hits", "ai.turn-order-preview", "defense.weakness", "defense.break", "status.timed", "party.solo", "encounter.proximity", "encounter.first-strike", "victory.defeat-all"]
+    },
+    {
+      "id": "deckbuilder",
+      "name": "Cartas por fases (estilo Slay the Spire / Into The Grid)",
+      "basedOn": ["sts2", "intothegrid"],
+      "summary": "Energía por turno, mano de cartas, intenciones enemigas visibles, escudo que se pierde.",
+      "time": "time.phases",
+      "mechanics": ["economy.energy", "actions.cards", "actions.items", "ai.intents", "defense.block", "status.stacks", "status.passives", "party.solo", "encounter.proximity", "victory.defeat-all"]
+    },
+    {
+      "id": "zones-duel",
+      "name": "Duelo por zonas (estilo Skyhill)",
+      "basedOn": ["skyhill"],
+      "summary": "Vos y después ellos; elegís zona del cuerpo con su probabilidad y su daño.",
+      "time": "time.phases",
+      "mechanics": ["economy.one-action", "actions.menu", "actions.items", "actions.flee", "reactive.body-part-aim", "defense.hit-chance", "ai.hidden", "party.solo", "encounter.proximity", "victory.defeat-all"]
+    },
+    {
+      "id": "rounds-classic",
+      "name": "Rondas clásicas",
+      "basedOn": [],
+      "summary": "Elegís los comandos de todos al principio de la ronda y se resuelven por velocidad.",
+      "time": "time.rounds",
+      "mechanics": ["economy.one-action", "economy.mp", "actions.menu", "actions.items", "actions.defend", "actions.flee", "ai.hidden", "status.timed", "party.solo", "encounter.proximity", "victory.defeat-all"]
+    }
+  ]
+}

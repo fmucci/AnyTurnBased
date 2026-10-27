@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 — 2026-10-27
+
+- `mechanics/`: base de mecánicas por turnos relevada en 9 juegos de la biblioteca (FF9, Expedition 33,
+  FF7 Rebirth, Slay the Spire 2, Into The Grid, SteamWorld Heist II, Skyhill, Balatro, Rune Dice).
+  48 mecánicas en 11 categorías, 6 presets y el esquema de `game/battle.json` (`docs/13`).
+- Skill `anytb-design`: entrevista a la persona para elegir modelo de tiempo y mecánicas, y escribe `battle.json`.
+- `scripts/check-mechanics.ps1`: valida ids, categorías de elección única y parámetros; con `-BattleConfig`
+  lista lo que falta en el core.
+- `new-game.ps1` copia `mechanics/`, el script y la skill al repo del juego.
+
 ## 0.2.0 — 2026-10-27
 
 - Renombrado de AnyRPG a **AnyTurnBased**: el proyecto pasa el combate a turnos, no convierte juegos en RPGs.

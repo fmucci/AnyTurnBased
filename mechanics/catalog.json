@@ -1,0 +1,313 @@
+{
+  "version": 1,
+  "coreStatus": {
+    "supported": "AnyTurnBased.Core ya lo hace",
+    "partial": "el core lo soporta a medias; ver la nota",
+    "planned": "factible en el core; falta implementarlo",
+    "research": "depende mucho de cada juego; hace falta investigar antes de prometerlo",
+    "reference": "existe en los juegos relevados pero no aplica a una conversión"
+  },
+  "categories": [
+    { "id": "time", "name": "Modelo de tiempo", "pick": "one", "question": "¿Cómo se decide quién actúa y cuándo?" },
+    { "id": "economy", "name": "Economía del turno", "pick": "many", "question": "¿Qué se gasta para actuar?" },
+    { "id": "actions", "name": "Acciones", "pick": "many", "question": "¿Cómo elige el jugador qué hacer?" },
+    { "id": "reactive", "name": "Habilidad en tiempo real", "pick": "many", "question": "¿Hay momentos de reflejos dentro del turno? Ninguna = puro menú" },
+    { "id": "ai", "name": "Información del enemigo", "pick": "one", "question": "¿Cuánto se sabe de lo que va a hacer el enemigo?" },
+    { "id": "defense", "name": "Daño y defensa", "pick": "many", "question": "¿Qué capas hay entre un golpe y la vida?" },
+    { "id": "status", "name": "Estados", "pick": "many", "question": "¿Qué efectos duran más de un turno?" },
+    { "id": "party", "name": "Grupo", "pick": "one", "question": "¿Pelea uno solo o un grupo?" },
+    { "id": "position", "name": "Posición", "pick": "many", "question": "¿Importa dónde está cada uno?" },
+    { "id": "encounter", "name": "Inicio del combate", "pick": "many", "question": "¿Cómo arranca una batalla en el juego convertido?" },
+    { "id": "victory", "name": "Condición de victoria", "pick": "one", "question": "¿Cuándo se gana?" }
+  ],
+  "mechanics": [
+    {
+      "id": "time.rounds", "category": "time", "name": "Rondas fijas",
+      "description": "Cada ronda todos actúan una vez, ordenados por velocidad. El jugador elige todos sus comandos al principio de la ronda.",
+      "params": { "chooseAllUpFront": { "type": "bool", "default": true } },
+      "core": "planned", "retrofit": "Usa Speed solo para ordenar; no depende del juego."
+    },
+    {
+      "id": "time.phases", "category": "time", "name": "Fases por bando",
+      "description": "Actúa todo el bando del jugador, en el orden que quiera, y después todo el bando enemigo.",
+      "params": {},
+      "core": "planned", "retrofit": "Sencillo. Pierde sentido la velocidad nativa del juego, salvo para el daño o la evasión."
+    },
+    {
+      "id": "time.ctb", "category": "time", "name": "Turnos por velocidad (CTB)",
+      "description": "Cada combatiente tiene su propio reloj; el más rápido actúa más seguido. El orden futuro se puede mostrar.",
+      "params": { "tickBase": { "type": "int", "default": 10000, "note": "ticks = tickBase / Speed" } },
+      "core": "supported", "retrofit": "Toma la velocidad de movimiento del juego (StatMapper)."
+    },
+    {
+      "id": "time.atb", "category": "time", "name": "ATB (barras en tiempo real)",
+      "description": "Las barras se llenan con el tiempo según la velocidad; al llenarse, el personaje puede actuar.",
+      "params": {
+        "mode": { "type": "enum", "options": ["wait", "active"], "default": "wait", "note": "wait: el tiempo se para mientras elegís en un submenú; active: nunca se para" },
+        "fillSeconds": { "type": "float", "default": 4.0, "note": "segundos para llenar la barra a velocidad media" }
+      },
+      "core": "planned", "retrofit": "El mundo sigue congelado; el reloj del ATB corre aparte, con tiempo sin escalar."
+    },
+    {
+      "id": "time.hybrid-atb", "category": "time", "name": "Acción + ATB",
+      "description": "Combate en tiempo real; atacar carga la barra y los comandos la gastan. Abrir el menú ralentiza el tiempo.",
+      "params": { "menuTimeScale": { "type": "float", "default": 0.1 } },
+      "core": "research", "retrofit": "No congela el mundo: hay que medir los golpes del juego y bajar el timeScale con el menú abierto."
+    },
+    {
+      "id": "time.budget", "category": "time", "name": "Turnos limitados",
+      "description": "El combate tiene un número fijo de turnos o manos para cumplir el objetivo.",
+      "params": { "turns": { "type": "int", "default": 4 } },
+      "core": "planned", "retrofit": "Se combina con victory.score o con victory.survive."
+    },
+
+    {
+      "id": "economy.one-action", "category": "economy", "name": "Una acción por turno",
+      "description": "Cada turno se elige exactamente una acción.",
+      "params": {}, "core": "supported", "retrofit": "Default."
+    },
+    {
+      "id": "economy.ap", "category": "economy", "name": "Puntos de acción acumulables",
+      "description": "Los PA persisten entre turnos. El ataque básico y las reacciones perfectas dan PA; las habilidades cuestan PA.",
+      "params": {
+        "start": { "type": "int", "default": 1 }, "max": { "type": "int", "default": 9 },
+        "perTurn": { "type": "int", "default": 1 }, "onBasicAttack": { "type": "int", "default": 1 }, "onPerfectReaction": { "type": "int", "default": 1 }
+      },
+      "core": "planned", "retrofit": "Reemplaza el mpCost actual o convive con él."
+    },
+    {
+      "id": "economy.energy", "category": "economy", "name": "Energía por turno",
+      "description": "Al empezar el turno la energía vuelve a un valor fijo; se reparte entre varias acciones del mismo turno.",
+      "params": { "perTurn": { "type": "int", "default": 3 } },
+      "core": "planned", "retrofit": "Suele ir con time.phases y actions.cards."
+    },
+    {
+      "id": "economy.move-and-act", "category": "economy", "name": "Mover y actuar",
+      "description": "El turno tiene una fase de movimiento y una de acción.",
+      "params": { "moveRange": { "type": "float", "default": 5.0, "note": "en unidades del juego" } },
+      "core": "research", "retrofit": "Requiere mover al personaje con la navegación del juego estando congelado. Depende del juego."
+    },
+    {
+      "id": "economy.mp", "category": "economy", "name": "Maná persistente",
+      "description": "Las habilidades gastan un recurso que no se recarga solo durante el combate.",
+      "params": {}, "core": "supported", "retrofit": "SkillAction.mpCost. Si el juego tiene maná propio, se escribe de vuelta como la vida."
+    },
+    {
+      "id": "economy.overdrive", "category": "economy", "name": "Medidor de límite",
+      "description": "Una barra que se carga recibiendo o haciendo daño y habilita una acción especial (Trance, Límite, gradiente).",
+      "params": {
+        "chargeOn": { "type": "enum", "options": ["damage-taken", "damage-dealt", "both"], "default": "damage-taken" },
+        "max": { "type": "int", "default": 100 }
+      },
+      "core": "planned", "retrofit": "No depende del juego."
+    },
+
+    {
+      "id": "actions.menu", "category": "actions", "name": "Menú de comandos",
+      "description": "Atacar / Habilidad / Objeto / Defender / Huir.",
+      "params": {}, "core": "supported", "retrofit": "Default."
+    },
+    {
+      "id": "actions.items", "category": "actions", "name": "Objetos del inventario",
+      "description": "Usar objetos reales del inventario del juego dentro del combate.",
+      "params": {}, "core": "partial", "retrofit": "Hoy la poción es una SkillAction. Usar el inventario real necesita hooks del juego."
+    },
+    {
+      "id": "actions.defend", "category": "actions", "name": "Defender",
+      "description": "Reduce el daño recibido hasta el próximo turno.",
+      "params": {}, "core": "supported", "retrofit": "DefendAction."
+    },
+    {
+      "id": "actions.flee", "category": "actions", "name": "Huir",
+      "description": "Termina el combate sin ganar ni perder.",
+      "params": {}, "core": "supported", "retrofit": "FleeAction; el director aplica un cooldown."
+    },
+    {
+      "id": "actions.cards", "category": "actions", "name": "Cartas",
+      "description": "Las acciones son cartas: mazo, mano, robar y descartar.",
+      "params": { "handSize": { "type": "int", "default": 5 } },
+      "core": "planned", "retrofit": "El mazo se arma con las armas y habilidades que tenga el personaje en el juego."
+    },
+    {
+      "id": "actions.combos", "category": "actions", "name": "Combinaciones",
+      "description": "El efecto sale de combinar elementos (manos de póker, colores, símbolos).",
+      "params": {}, "core": "research", "retrofit": "Hay que diseñar qué se combina en cada juego."
+    },
+    {
+      "id": "actions.dice", "category": "actions", "name": "Dados",
+      "description": "Se tiran dados y cada resultado habilita o potencia acciones.",
+      "params": { "dice": { "type": "int", "default": 3 } },
+      "core": "planned", "retrofit": "No depende del juego."
+    },
+    {
+      "id": "actions.character-mechanics", "category": "actions", "name": "Mecánica propia por personaje",
+      "description": "Cada personaje tiene un sistema propio (posturas, cargas, marcas).",
+      "params": {}, "core": "research", "retrofit": "Diseño a mano por juego."
+    },
+
+    {
+      "id": "reactive.dodge-parry", "category": "reactive", "name": "Esquivar y parar",
+      "description": "En el turno enemigo, apretar a tiempo evita el golpe; una parada perfecta habilita un contraataque.",
+      "params": {
+        "windowMs": { "type": "int", "default": 180 }, "parryWindowMs": { "type": "int", "default": 90 },
+        "counterOnFullParry": { "type": "bool", "default": true }
+      },
+      "core": "planned", "retrofit": "Sin animación nativa hay que mostrar una señal propia (barra o anillo en la UI). Con el mundo congelado no se ven las animaciones de ataque del juego."
+    },
+    {
+      "id": "reactive.timed-hits", "category": "reactive", "name": "Golpes con timing",
+      "description": "Al ejecutar una habilidad, apretar en el momento justo aumenta el daño.",
+      "params": { "windowMs": { "type": "int", "default": 150 }, "perfectBonus": { "type": "float", "default": 0.5 } },
+      "core": "planned", "retrofit": "Igual que dodge-parry: la señal la dibuja la UI de AnyTurnBased."
+    },
+    {
+      "id": "reactive.free-aim", "category": "reactive", "name": "Apuntado libre",
+      "description": "El jugador apunta a mano a un punto débil o a un ángulo.",
+      "params": {}, "core": "research", "retrofit": "Necesita la cámara y los colliders del juego."
+    },
+    {
+      "id": "reactive.body-part-aim", "category": "reactive", "name": "Zonas del cuerpo",
+      "description": "Se elige zona (cabeza, torso, piernas); cada zona tiene su probabilidad de acierto y su daño.",
+      "params": { "zones": { "type": "list", "default": [ { "name": "Cabeza", "hit": 0.5, "power": 2.0 }, { "name": "Torso", "hit": 0.85, "power": 1.0 }, { "name": "Piernas", "hit": 0.7, "power": 0.8 } ] } },
+      "core": "planned", "retrofit": "Es un submenú de objetivo; no depende del juego."
+    },
+
+    {
+      "id": "ai.hidden", "category": "ai", "name": "Sin aviso",
+      "description": "El enemigo decide en su turno; no se sabe qué va a hacer.",
+      "params": {}, "core": "supported", "retrofit": "SimpleEnemyAi."
+    },
+    {
+      "id": "ai.turn-order-preview", "category": "ai", "name": "Orden de turnos visible",
+      "description": "Se ve quién actúa en los próximos turnos, pero no qué va a hacer.",
+      "params": { "count": { "type": "int", "default": 6 } },
+      "core": "supported", "retrofit": "BattleEngine.PreviewOrder."
+    },
+    {
+      "id": "ai.intents", "category": "ai", "name": "Intenciones visibles",
+      "description": "Cada enemigo muestra lo que va a hacer en su próximo turno (atacar por X, defenderse, aplicar un estado).",
+      "params": {}, "core": "planned", "retrofit": "La IA elige su acción un turno antes. No depende del juego."
+    },
+
+    {
+      "id": "defense.block", "category": "defense", "name": "Escudo temporal",
+      "description": "Puntos que absorben daño antes que la vida y se pierden al empezar el turno propio.",
+      "params": { "decay": { "type": "enum", "options": ["full", "half", "none"], "default": "full" } },
+      "core": "planned", "retrofit": "No depende del juego."
+    },
+    {
+      "id": "defense.weakness", "category": "defense", "name": "Debilidades",
+      "description": "Elementos o tipos de daño hacen más o menos daño según el enemigo.",
+      "params": {}, "core": "planned", "retrofit": "Si el juego tiene elementos, se leen; si no, hay que asignarlos por tipo de enemigo."
+    },
+    {
+      "id": "defense.break", "category": "defense", "name": "Quiebre",
+      "description": "Una segunda barra que, al vaciarse, deja al enemigo aturdido y vulnerable.",
+      "params": { "stunTurns": { "type": "int", "default": 1 }, "damageBonus": { "type": "float", "default": 0.5 } },
+      "core": "planned", "retrofit": "Si el juego tiene stagger/poise, se usa su valor como base."
+    },
+    {
+      "id": "defense.hit-chance", "category": "defense", "name": "Probabilidad de acierto",
+      "description": "Los ataques pueden fallar según la precisión y la evasión.",
+      "params": { "baseHit": { "type": "float", "default": 0.95 } },
+      "core": "planned", "retrofit": "No depende del juego."
+    },
+    {
+      "id": "defense.cover", "category": "defense", "name": "Cobertura",
+      "description": "Estar detrás de un objeto reduce el daño o la probabilidad de recibir golpes.",
+      "params": {}, "core": "research", "retrofit": "Necesita raycasts contra la geometría del juego."
+    },
+
+    {
+      "id": "status.timed", "category": "status", "name": "Estados con duración",
+      "description": "Veneno, sueño, prisa, etc. Duran N turnos.",
+      "params": {}, "core": "planned", "retrofit": "No depende del juego. Si el juego tiene estados propios, se pueden traducir."
+    },
+    {
+      "id": "status.stacks", "category": "status", "name": "Estados acumulables",
+      "description": "Los efectos tienen una cantidad que sube al aplicarlos y baja cada turno.",
+      "params": {}, "core": "planned", "retrofit": "No depende del juego."
+    },
+    {
+      "id": "status.passives", "category": "status", "name": "Modificadores pasivos",
+      "description": "Reliquias o comodines que cambian las reglas durante todo el combate.",
+      "params": {}, "core": "planned", "retrofit": "Se pueden derivar del equipamiento del juego."
+    },
+
+    {
+      "id": "party.solo", "category": "party", "name": "Un personaje",
+      "description": "El jugador controla un solo combatiente.",
+      "params": {}, "core": "supported", "retrofit": "Default en juegos de acción."
+    },
+    {
+      "id": "party.multi", "category": "party", "name": "Grupo",
+      "description": "Varios combatientes del jugador, cada uno con su turno.",
+      "params": { "size": { "type": "int", "default": 3 } },
+      "core": "partial", "retrofit": "El motor acepta listas, pero los adapters devuelven solo al jugador. Hace falta que el juego tenga compañeros o inventarlos."
+    },
+
+    {
+      "id": "position.rows", "category": "position", "name": "Filas",
+      "description": "Delante o detrás: detrás se recibe y se hace menos daño cuerpo a cuerpo.",
+      "params": { "backRowMultiplier": { "type": "float", "default": 0.5 } },
+      "core": "planned", "retrofit": "No depende del juego."
+    },
+    {
+      "id": "position.grid", "category": "position", "name": "Grilla táctica",
+      "description": "El combate ocurre en casillas; importan la distancia y la línea de visión.",
+      "params": {}, "core": "research", "retrofit": "Hay que proyectar una grilla sobre el nivel del juego."
+    },
+    {
+      "id": "position.summons", "category": "position", "name": "Invocaciones",
+      "description": "Aparecen combatientes nuevos en medio del combate.",
+      "params": {}, "core": "planned", "retrofit": "Los invocados del core no existen en el mundo del juego, salvo que se instancien enemigos nativos."
+    },
+
+    {
+      "id": "encounter.proximity", "category": "encounter", "name": "Por cercanía",
+      "description": "La batalla arranca cuando un enemigo entra en un radio.",
+      "params": { "radius": { "type": "float", "default": 8.0 } },
+      "core": "supported", "retrofit": "EncounterDirector."
+    },
+    {
+      "id": "encounter.manual", "category": "encounter", "name": "Con una tecla",
+      "description": "El jugador fuerza la batalla.",
+      "params": { "key": { "type": "string", "default": "F9" } },
+      "core": "supported", "retrofit": "TryStart()."
+    },
+    {
+      "id": "encounter.first-strike", "category": "encounter", "name": "Golpe inicial",
+      "description": "Si el jugador golpea primero en el mapa empieza con ventaja; si lo golpean, el enemigo.",
+      "params": { "advantage": { "type": "enum", "options": ["extra-turn", "damage", "both"], "default": "extra-turn" } },
+      "core": "planned", "retrofit": "Hookear el primer golpe del juego (el de daño) en lugar del radio."
+    },
+    {
+      "id": "encounter.random", "category": "encounter", "name": "Aleatorio",
+      "description": "Batallas por pasos sin enemigos visibles.",
+      "params": {}, "core": "reference", "retrofit": "Los juegos convertidos ya muestran a sus enemigos."
+    },
+    {
+      "id": "encounter.symbol", "category": "encounter", "name": "Enemigos visibles",
+      "description": "Los enemigos están en el mapa; tocarlos inicia el combate.",
+      "params": {}, "core": "reference", "retrofit": "Es lo que ya hace encounter.proximity."
+    },
+
+    {
+      "id": "victory.defeat-all", "category": "victory", "name": "Derrotar a todos",
+      "description": "Se gana cuando no queda ningún enemigo en pie.",
+      "params": {}, "core": "supported", "retrofit": "Default."
+    },
+    {
+      "id": "victory.score", "category": "victory", "name": "Puntaje objetivo",
+      "description": "Se gana al llegar a un puntaje antes de que se acaben los turnos.",
+      "params": { "target": { "type": "int", "default": 300 } },
+      "core": "research", "retrofit": "No tiene equivalente en el mundo del juego: qué pasa con los enemigos vivos lo decide el diseño."
+    },
+    {
+      "id": "victory.survive", "category": "victory", "name": "Sobrevivir",
+      "description": "Se gana aguantando N turnos.",
+      "params": { "turns": { "type": "int", "default": 5 } },
+      "core": "planned", "retrofit": "Al terminar, los enemigos vuelven al tiempo real con el cooldown."
+    }
+  ]
+}

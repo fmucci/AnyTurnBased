@@ -1,0 +1,182 @@
+{
+  "surveyDate": "2026-10-27",
+  "source": "Biblioteca local de Steam (appmanifest_*.acf). Evidencia: observed = clases/archivos leídos en disco; documented = diseño público del juego; inferred = deducido; unknown = sin confirmar.",
+  "games": [
+    {
+      "id": "ff9",
+      "name": "FINAL FANTASY IX",
+      "engine": "Unity Mono (port de Memoria)",
+      "battleStyle": "ATB clásico, grupo de 4",
+      "evidence": [
+        "observed: Assembly-CSharp tiene FF9.battle_phase, FF9.command_status, FF9.continuous_status_tags, battle_start_type_tags, BattleCalculation, BattleHUD"
+      ],
+      "mechanics": {
+        "time.atb": "documented: barras que se llenan en tiempo real; opción Active/Wait en la configuración",
+        "economy.one-action": "documented",
+        "economy.mp": "documented",
+        "economy.overdrive": "documented: Trance, se carga al recibir daño",
+        "actions.menu": "documented: Atacar / habilidad del personaje / Objeto / Defender / Cambiar fila",
+        "actions.items": "documented",
+        "actions.defend": "documented",
+        "actions.flee": "documented",
+        "defense.weakness": "documented: elementos y debilidades",
+        "defense.hit-chance": "documented",
+        "status.timed": "observed: continuous_status_tags",
+        "party.multi": "documented: 4 personajes",
+        "position.rows": "documented: fila trasera recibe y hace menos daño físico",
+        "ai.hidden": "documented: el enemigo no anuncia su acción",
+        "encounter.random": "documented",
+        "encounter.first-strike": "observed: battle_start_type_tags (ataque preventivo / por la espalda)"
+      }
+    },
+    {
+      "id": "expedition33",
+      "name": "Clair Obscur: Expedition 33",
+      "engine": "Unreal Engine 5",
+      "battleStyle": "por turnos con reacciones en tiempo real",
+      "evidence": [
+        "observed: SandFall-Win64-Shipping.exe (UE5). No se leyeron clases: los .pak no se abrieron"
+      ],
+      "mechanics": {
+        "time.ctb": "documented: orden por velocidad visible en una línea de turnos",
+        "ai.turn-order-preview": "documented",
+        "economy.ap": "documented: se ganan PA atacando y con paradas perfectas; las habilidades cuestan PA",
+        "economy.overdrive": "documented: cargas de gradiente compartidas por el grupo",
+        "actions.menu": "documented: ataque base / habilidades / objetos / apuntado libre",
+        "reactive.dodge-parry": "documented: esquivar, parar y saltar en el turno enemigo; parar todo da contraataque",
+        "reactive.timed-hits": "documented: pulsaciones con timing durante las habilidades",
+        "reactive.free-aim": "documented: disparo libre a puntos débiles, cuesta PA",
+        "defense.break": "documented: barra de quiebre que deja al enemigo aturdido",
+        "defense.weakness": "documented",
+        "status.timed": "documented",
+        "party.multi": "documented: 3 en combate con reemplazo",
+        "actions.character-mechanics": "documented: cada personaje tiene su sistema propio (posturas, manchas, etc.)",
+        "encounter.symbol": "documented: los enemigos se ven en el mapa",
+        "encounter.first-strike": "documented: golpear primero en el mapa da ventaja"
+      }
+    },
+    {
+      "id": "ff7rebirth",
+      "name": "FINAL FANTASY VII REBIRTH",
+      "engine": "Unreal (iostore)",
+      "battleStyle": "acción en tiempo real con ATB para comandos",
+      "evidence": [
+        "observed: Unreal iostore (.utoc/.ucas). No se leyeron clases"
+      ],
+      "mechanics": {
+        "time.hybrid-atb": "documented: el ATB se carga atacando y se gasta en comandos; el menú ralentiza el tiempo",
+        "economy.mp": "documented",
+        "economy.overdrive": "documented: Límite",
+        "defense.break": "documented: presión y aturdimiento (stagger)",
+        "defense.weakness": "documented",
+        "party.multi": "documented: 3 personajes, cambio en vivo",
+        "reactive.dodge-parry": "documented: esquivar y bloquear en tiempo real"
+      }
+    },
+    {
+      "id": "sts2",
+      "name": "Slay the Spire 2",
+      "engine": "Godot .NET",
+      "battleStyle": "constructor de mazos por fases",
+      "evidence": [
+        "observed: sts2.dll tiene MonsterMoves.Intents.* (AttackIntent, DefendIntent, BuffIntent, SummonIntent, HiddenIntent, UnknownIntent...), NEnergyCounter, NEndTurnButton, BlockProps, Models.Powers.*, Models.Orbs.*"
+      ],
+      "mechanics": {
+        "time.phases": "documented: jugás todas tus cartas y después actúan los enemigos",
+        "economy.energy": "observed: NEnergyCounter, EnergyNextTurnPower",
+        "actions.cards": "documented: mazo, mano, robar, descartar",
+        "actions.items": "observed: PotionModel (BlockPotion, EnergyPotion)",
+        "ai.intents": "observed: MonsterMoves.Intents.*",
+        "defense.block": "observed: BlockProps, NoBlockPower, BlockNextTurnPower",
+        "status.stacks": "observed: Models.Powers.* (poderes acumulables)",
+        "position.summons": "observed: SummonIntent, SummonNextTurnPower",
+        "party.solo": "documented: un personaje (hay co-op online, fuera de alcance)"
+      }
+    },
+    {
+      "id": "intothegrid",
+      "name": "Into The Grid",
+      "engine": "Unity Mono",
+      "battleStyle": "constructor de mazos por fases",
+      "evidence": [
+        "observed: Assembly-CSharp tiene CombatManager, VimManager, EnemyIntentTemplate, StatusFactory, CardSlot, BaseCardPlayResolver, CommandCable, PersistController, SEndTurnBtn"
+      ],
+      "mechanics": {
+        "time.phases": "inferred: botón de fin de turno (SEndTurnBtn) e intenciones enemigas",
+        "economy.energy": "observed: VimManager (recurso Vim que se gana y se consume)",
+        "actions.cards": "observed: CardSlot, ReturnToHandCardPlayResolver",
+        "ai.intents": "observed: EnemyIntentTemplate, EventOnAllIntentsUpdated",
+        "status.stacks": "observed: Status, EStatusEffectOperation",
+        "party.solo": "inferred"
+      },
+      "unknown": [
+        "CommandCable / PersistController: alguna mecánica de cartas conectadas o persistentes; sin confirmar"
+      ]
+    },
+    {
+      "id": "heist2",
+      "name": "SteamWorld Heist II",
+      "engine": "motor propio",
+      "battleStyle": "táctico por turnos en grilla 2D",
+      "evidence": [
+        "observed: motor propio, sin loader conocido. Mecánicas por diseño público"
+      ],
+      "mechanics": {
+        "time.phases": "documented: actúa todo tu equipo y después el enemigo",
+        "economy.move-and-act": "documented: mover y después disparar o usar habilidad",
+        "reactive.free-aim": "documented: apuntado manual con rebotes",
+        "defense.cover": "documented",
+        "defense.hit-chance": "inferred: la puntería manual reemplaza el porcentaje",
+        "position.grid": "documented",
+        "party.multi": "documented: escuadra"
+      }
+    },
+    {
+      "id": "skyhill",
+      "name": "SKYHILL",
+      "engine": "Unity 5.5 Mono .NET 3.5",
+      "battleStyle": "1 contra 1 por turnos con zonas de ataque",
+      "evidence": [
+        "observed: Assembly-CSharp tiene FightingManager, AttackZones, UI_PC_AttackZones, WeaponsControl, BaseEnemy, UI_PC_EnemyStats"
+      ],
+      "mechanics": {
+        "time.phases": "inferred: el jugador ataca y después el enemigo (iterador enemiesAttack)",
+        "economy.one-action": "documented",
+        "reactive.body-part-aim": "observed: AttackZones; documented: cada zona tiene su probabilidad y su daño",
+        "defense.hit-chance": "documented",
+        "actions.items": "observed: UI_PC_FightingItem",
+        "party.solo": "documented"
+      }
+    },
+    {
+      "id": "balatro",
+      "name": "Balatro",
+      "engine": "LÖVE 11",
+      "battleStyle": "puntaje por manos limitadas",
+      "evidence": [
+        "observed: love.dll, lua51.dll. Mecánicas por diseño público"
+      ],
+      "mechanics": {
+        "time.budget": "documented: una cantidad fija de manos y descartes por ciegas",
+        "actions.combos": "documented: combinaciones de póker",
+        "victory.score": "documented: superar un puntaje objetivo",
+        "status.passives": "documented: comodines que modifican cada mano"
+      }
+    },
+    {
+      "id": "runedice",
+      "name": "Rune Dice",
+      "engine": "Unity IL2CPP",
+      "battleStyle": "unknown",
+      "evidence": [
+        "observed: Unity IL2CPP. Sin interop generado: las clases no se pueden leer sin instalar BepInEx 6"
+      ],
+      "mechanics": {
+        "actions.dice": "inferred: por el nombre"
+      }
+    }
+  ],
+  "notInstalled": [
+    "SlayTheSpire (1): mismo modelo que Slay the Spire 2 (documented)"
+  ]
+}

@@ -34,7 +34,12 @@ Copy-Item (Join-Path $root 'template\core') (Join-Path $dest 'core') -Recurse
 New-Item -ItemType Directory -Force (Join-Path $dest 'adapters') | Out-Null
 Copy-Item (Join-Path $root "template\adapters\$adapter") (Join-Path $dest "adapters\$adapter") -Recurse
 Copy-Item (Join-Path $root '.gitignore') $dest
-New-Item -ItemType Directory -Force (Join-Path $dest 'game'), (Join-Path $dest 'docs') | Out-Null
+New-Item -ItemType Directory -Force (Join-Path $dest 'game'), (Join-Path $dest 'docs'), (Join-Path $dest 'scripts') | Out-Null
+# Mechanics database + the anytb-design interview, so battle.json can be designed inside the game repo (docs/13).
+Copy-Item (Join-Path $root 'mechanics') (Join-Path $dest 'mechanics') -Recurse
+Copy-Item (Join-Path $root 'scripts\check-mechanics.ps1') (Join-Path $dest 'scripts')
+New-Item -ItemType Directory -Force (Join-Path $dest '.claude\skills') | Out-Null
+Copy-Item (Join-Path $root '.claude\skills\anytb-design') (Join-Path $dest '.claude\skills\anytb-design') -Recurse
 
 $cfg = Get-Content (Join-Path $root 'template\game\game.json') -Raw | ConvertFrom-Json
 $cfg.name = $Game
