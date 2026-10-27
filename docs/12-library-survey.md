@@ -9,7 +9,7 @@ Los motores son **observed** (archivos presentes en disco). El género y el tipo
 | Juego | Motor (observed) | Loader | Combate original | Notas |
 |---|---|---|---|---|
 | Stardew Valley | MonoGame / .NET 6 (`Stardew Valley.dll`, `runtimeconfig` net6.0, `0Harmony.dll`) | SMAPI | melee en tiempo real en las minas | **Piloto.** Adapter en `template/adapters/monogame-smapi`. SMAPI no está instalado todavía (observed) |
-| Moonlighter 2 | Unity IL2CPP | BepInEx 6 IL2CPP | ARPG en tiempo real | buen caso de dungeon con salas cerradas = encuentro natural |
+| Moonlighter 2 | Unity 6000.3.18f1 IL2CPP, metadata v39 | BepInEx 6 be.791 | ARPG en tiempo real | **En curso**: repo `anyturnbased-moonlighter2`, el plugin carga (**observed**). Combate sin probar |
 | Hogwarts Legacy | Unreal (iostore) | UE4SS | acción mágica en tiempo real | caso grande de Unreal, comunidad de UE4SS activa (**documented**) |
 
 ## Prioridad 2: combate en tiempo real, más trabajo

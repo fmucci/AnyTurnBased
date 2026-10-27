@@ -6,7 +6,9 @@
 #>
 param(
     [Parameter(Mandatory)] [string]$Game,
-    [string]$WorkRoot = (Join-Path $HOME 'work')
+    [string]$WorkRoot = (Join-Path $HOME 'work'),
+    # Short name for the repo folder; long Steam folder names can push build paths past 260 chars.
+    [string]$Slug
 )
 
 $ErrorActionPreference = 'Stop'
@@ -22,7 +24,7 @@ $adapter = switch -Wildcard ($fp.Engine) {
     default    { throw "[AnyTurnBased] no adapter template for engine '$($fp.Engine)' yet (docs/02)" }
 }
 
-$slug = ($Game.ToLower() -replace '[^a-z0-9]+', '-').Trim('-')
+$slug = if ($Slug) { $Slug } else { ($Game.ToLower() -replace '[^a-z0-9]+', '-').Trim('-') }
 $dest = Join-Path $WorkRoot "anyturnbased-$slug"
 if (Test-Path $dest) { throw "[AnyTurnBased] $dest already exists" }
 

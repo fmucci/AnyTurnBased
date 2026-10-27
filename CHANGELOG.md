@@ -6,6 +6,9 @@
   Namespaces `AnyTurnBased.*`, comando de debug `anytb_battle`, mod de SMAPI `fmucci.AnyTurnBased`,
   repos por juego `anyturnbased-<slug>`.
 - `docs/12`: Skyhill pasa a "ya son por turnos" (Unity 5.5.0f3, x86, Mono .NET 3.5).
+- Moonlighter 2: primer juego Unity IL2CPP. BepInEx 6 be.791 funciona en Unity 6000.3 (metadata v39) y el
+  plugin carga. Lo aprendido de IL2CPP queda en `docs/03`.
+- `new-game.ps1 -Slug`: nombre corto para el repo del juego, para no pasar de 260 caracteres en las rutas de build.
 
 ## 0.1.0 — 2026-10-27
 
