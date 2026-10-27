@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace AnyRpg.Core
+namespace AnyTurnBased.Core
 {
     public interface IEnemyAi
     {

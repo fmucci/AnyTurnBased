@@ -16,7 +16,7 @@ function Get-SteamLibraries {
     try { $steam = (Get-ItemProperty 'HKCU:\Software\Valve\Steam' -ErrorAction Stop).SteamPath } catch {}
     if (-not $steam) { $steam = 'C:\Program Files (x86)\Steam' }
     $vdf = Join-Path $steam 'steamapps\libraryfolders.vdf'
-    if (-not (Test-Path $vdf)) { throw "[AnyRPG] libraryfolders.vdf not found under $steam" }
+    if (-not (Test-Path $vdf)) { throw "[AnyTurnBased] libraryfolders.vdf not found under $steam" }
     Select-String -Path $vdf -Pattern '"path"\s+"([^"]+)"' | ForEach-Object {
         Join-Path ($_.Matches[0].Groups[1].Value -replace '\\\\', '\') 'steamapps\common'
     } | Where-Object { Test-Path $_ } | Select-Object -Unique
@@ -77,7 +77,7 @@ $rows = foreach ($lib in Get-SteamLibraries) {
     }
 }
 
-if ($Game -and -not $rows) { throw "[AnyRPG] game folder not found: $Game" }
+if ($Game -and -not $rows) { throw "[AnyTurnBased] game folder not found: $Game" }
 
 if ($Out) {
     $md = @('| Game | GB | Engine | Loader | Detail | Excluded |', '|---|---|---|---|---|---|')

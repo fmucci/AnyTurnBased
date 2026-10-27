@@ -1,14 +1,14 @@
--- AnyRPG for Unreal via UE4SS. GAME-SPECIFIC values are in CONFIG; the rest is generic.
-local core = require("anyrpg_core")
+-- AnyTurnBased for Unreal via UE4SS. GAME-SPECIFIC values are in CONFIG; the rest is generic.
+local core = require("anyturnbased_core")
 
 local CONFIG = {
     playerClass = "TODO_PlayerCharacter",   -- from UE4SS object dump
     enemyClass  = "TODO_EnemyCharacter",
     radius      = 1500.0,                   -- Unreal units (cm)
     -- Functions that read/write health on this game's actors. Fail loud until filled in.
-    getHp    = function(actor) error("[AnyRPG] CONFIG.getHp not set (docs/04)") end,
-    getMaxHp = function(actor) error("[AnyRPG] CONFIG.getMaxHp not set (docs/04)") end,
-    applyDamage = function(actor, amount) error("[AnyRPG] CONFIG.applyDamage not set (docs/04)") end,
+    getHp    = function(actor) error("[AnyTurnBased] CONFIG.getHp not set (docs/04)") end,
+    getMaxHp = function(actor) error("[AnyTurnBased] CONFIG.getMaxHp not set (docs/04)") end,
+    applyDamage = function(actor, amount) error("[AnyTurnBased] CONFIG.applyDamage not set (docs/04)") end,
 }
 
 local GameplayStatics = StaticFindObject("/Script/Engine.Default__GameplayStatics")
@@ -42,7 +42,7 @@ end
 local function start_encounter()
     if battle then return end
     local player = FindFirstOf(CONFIG.playerClass)
-    if not player or not player:IsValid() then error("[AnyRPG] player class not found: " .. CONFIG.playerClass) end
+    if not player or not player:IsValid() then error("[AnyTurnBased] player class not found: " .. CONFIG.playerClass) end
 
     local party, n = { to_combatant(player, "player", 1) }, 0
     for _, e in ipairs(FindAllOf(CONFIG.enemyClass) or {}) do
@@ -51,11 +51,11 @@ local function start_encounter()
             table.insert(party, to_combatant(e, "enemy", n))
         end
     end
-    if n == 0 then print("[AnyRPG] no enemy in range\n") return end
+    if n == 0 then print("[AnyTurnBased] no enemy in range\n") return end
 
     freeze(player)
     battle = core.new_battle(party)
-    print("[AnyRPG] encounter with " .. n .. " enemies\n")
+    print("[AnyTurnBased] encounter with " .. n .. " enemies\n")
 end
 
 local function finish()
@@ -63,7 +63,7 @@ local function finish()
         if c.hp ~= c.startHp then CONFIG.applyDamage(c.native, c.startHp - c.hp) end
     end
     resume(battle.all[1].native)
-    print("[AnyRPG] battle ended: " .. battle.outcome .. "\n")
+    print("[AnyTurnBased] battle ended: " .. battle.outcome .. "\n")
     battle = nil
 end
 
@@ -100,4 +100,4 @@ RegisterKeyBind(Key.THREE, function() ExecuteInGameThread(function() player_act(
 RegisterKeyBind(Key.FOUR,  function() ExecuteInGameThread(function() player_act("flee") end) end)
 RegisterKeyBind(Key.TAB,   function() cursor = cursor + 1 end)
 
-print("[AnyRPG] loaded (UE4SS)\n")
+print("[AnyTurnBased] loaded (UE4SS)\n")

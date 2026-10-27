@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AnyRpg.Core;
+using AnyTurnBased.Core;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Monsters;
 using StardewValley.Tools;
 
-namespace AnyRpg.Smapi
+namespace AnyTurnBased.Smapi
 {
     /// <summary>
     /// Stardew Valley 1.6. Member names below are **documented** (SMAPI/decompiled 1.6 API), not yet
@@ -43,7 +43,7 @@ namespace AnyRpg.Smapi
 
         public IReadOnlyList<Combatant> FindNearbyEnemies(float radiusTiles)
         {
-            var loc = Game1.currentLocation ?? throw new InvalidOperationException("[AnyRPG] no current location");
+            var loc = Game1.currentLocation ?? throw new InvalidOperationException("[AnyTurnBased] no current location");
             var playerPos = Game1.player.Position;
             float playerSpeed = Game1.player.getMovementSpeed();
             int playerHp = Game1.player.maxHealth;
@@ -82,19 +82,19 @@ namespace AnyRpg.Smapi
             {
                 case Farmer f: f.health = Math.Max(1, c.Stats.Hp); break;
                 case Monster m: m.Health = Math.Max(1, c.Stats.Hp); break;
-                default: throw new InvalidOperationException($"[AnyRPG] unknown native handle for {c}");
+                default: throw new InvalidOperationException($"[AnyTurnBased] unknown native handle for {c}");
             }
         }
 
         public void Kill(Combatant c)
         {
-            if (!(c.NativeHandle is Monster m)) throw new InvalidOperationException($"[AnyRPG] {c} is not a Monster");
+            if (!(c.NativeHandle is Monster m)) throw new InvalidOperationException($"[AnyTurnBased] {c} is not a Monster");
             var loc = Game1.currentLocation;
             // damageMonster is the vanilla path: it grants XP, rolls drops and counts slayer quests.
             var box = m.GetBoundingBox();
             loc.damageMonster(box, 99999, 99999, isBomb: false, Game1.player, isProjectile: true);
             if (loc.characters.Contains(m))
-                _monitor.Log($"[AnyRPG] {m.Name} survived damageMonster; check docs/09", LogLevel.Warn);
+                _monitor.Log($"[AnyTurnBased] {m.Name} survived damageMonster; check docs/09", LogLevel.Warn);
         }
 
         public void PresentAction(ActionResult result)

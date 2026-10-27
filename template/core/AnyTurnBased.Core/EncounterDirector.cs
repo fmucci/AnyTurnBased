@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace AnyRpg.Core
+namespace AnyTurnBased.Core
 {
     public enum DirectorState { Exploring, InBattle, Cooldown }
 
@@ -63,7 +63,7 @@ namespace AnyRpg.Core
             var party = _game.GetPlayerParty();
             _game.FreezeWorld();
             Battle = new BattleEngine(party.Concat(enemies), _rng);
-            Log($"[AnyRPG] encounter: {string.Join(", ", Battle.All)}");
+            Log($"[AnyTurnBased] encounter: {string.Join(", ", Battle.All)}");
             _ui.Open(Battle);
             _timer = 0;
             State = DirectorState.InBattle;
@@ -90,14 +90,14 @@ namespace AnyRpg.Core
             }
 
             var result = Battle.Execute(action, target);
-            Log("[AnyRPG] " + result.Message);
+            Log("[AnyTurnBased] " + result.Message);
             _ui.ShowResult(result);
             _game.PresentAction(result);
         }
 
         private void Finish()
         {
-            Log($"[AnyRPG] battle ended: {Battle.Outcome}");
+            Log($"[AnyTurnBased] battle ended: {Battle.Outcome}");
             _ui.Close();
             foreach (var c in Battle.All)
             {

@@ -6,7 +6,7 @@
 2. Instalar el loader del motor y confirmar que carga un mod vacío.
 3. Encontrar las clases del jugador, los enemigos y la salud (dnSpy/ILSpy, Il2CppDumper, dump de UE4SS).
 4. Implementar los seis hooks de `IGameAdapter` en el orden de PLAYBOOK §3, con un log que verifique cada uno.
-5. Forzar encuentros con el comando de debug (`anyrpg_battle`, F9) antes de activar la detección automática.
+5. Forzar encuentros con el comando de debug (`anytb_battle`, F9) antes de activar la detección automática.
 6. Verificar contra el juego sin mod: un kill por turnos deja el mismo estado que un kill normal.
 
 ## Reglas de evidencia
@@ -32,7 +32,7 @@ sin implementar, así el primer arranque lista lo que falta.
 
 | Capa | Dónde | Qué prueba |
 |---|---|---|
-| Core | `template/core/AnyRpg.Core.Tests` | turnos, daño, victoria/derrota/huida, director con adapter falso |
+| Core | `template/core/AnyTurnBased.Core.Tests` | turnos, daño, victoria/derrota/huida, director con adapter falso |
 | Adapter | log en el juego | cada hook de PLAYBOOK §3 |
 | Equivalencia | juego | kill por turnos = kill normal (drop, XP, quest) |
 | Soak | juego | 50 encuentros seguidos con input aleatorio |

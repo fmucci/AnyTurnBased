@@ -10,5 +10,5 @@
 - Congelar: `SetGlobalTimeDilation`. Valores extremos se clampean (`docs/07`).
 - Versiones observadas: Librarian `++UE5+Release-5.5`. Las demás no exponen la versión en `FileVersion`.
   Hay que leerla del exe con un string search de `++UE` (**unknown** hasta hacerlo).
-- El core está portado a Lua (`template/adapters/unreal-ue4ss/Scripts/anyrpg_core.lua`). Hay que mantener las
+- El core está portado a Lua (`template/adapters/unreal-ue4ss/Scripts/anyturnbased_core.lua`). Hay que mantener las
   fórmulas iguales a las de C# (`docs/09`).

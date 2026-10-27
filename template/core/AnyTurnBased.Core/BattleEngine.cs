@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AnyRpg.Core
+namespace AnyTurnBased.Core
 {
     public interface IRandom { float NextFloat(); }
 

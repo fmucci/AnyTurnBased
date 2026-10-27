@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
-using AnyRpg.Core;
+using AnyTurnBased.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace AnyRpg.Smapi
+namespace AnyTurnBased.Smapi
 {
     /// <summary>Text-box battle menu drawn on the HUD. Up/Down picks, Confirm accepts, Cancel goes back.</summary>
     internal sealed class StardewBattleUi : IBattleUi

@@ -5,7 +5,7 @@
 - `love.dll` + `lua51.dll` (**observed**). Los mods se inyectan con Lovely, que parchea el Lua del juego
   al cargarlo (**documented**).
 - Balatro ya es por turnos y queda solo como referencia. Para otro juego LÖVE se reusaría
-  `anyrpg_core.lua`, pero LuaJIT/5.1 no tiene `//`: hay que reemplazarlo por `math.floor(a / b)`
+  `anyturnbased_core.lua`, pero LuaJIT/5.1 no tiene `//`: hay que reemplazarlo por `math.floor(a / b)`
   (**inferred**).
 
 ## RE Engine (PRAGMATA)

@@ -13,18 +13,18 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $fp = & (Join-Path $PSScriptRoot 'scan-steam.ps1') -Game $Game | Select-Object -First 1
 
-if ($fp.Excluded) { throw "[AnyRPG] $Game excluded: $($fp.Excluded) (PLAYBOOK 0.2)" }
+if ($fp.Excluded) { throw "[AnyTurnBased] $Game excluded: $($fp.Excluded) (PLAYBOOK 0.2)" }
 
 $adapter = switch -Wildcard ($fp.Engine) {
     'unity-*'  { 'unity-bepinex' }
     'unreal'   { 'unreal-ue4ss' }
     'monogame' { 'monogame-smapi' }
-    default    { throw "[AnyRPG] no adapter template for engine '$($fp.Engine)' yet (docs/02)" }
+    default    { throw "[AnyTurnBased] no adapter template for engine '$($fp.Engine)' yet (docs/02)" }
 }
 
 $slug = ($Game.ToLower() -replace '[^a-z0-9]+', '-').Trim('-')
-$dest = Join-Path $WorkRoot "anyrpg-$slug"
-if (Test-Path $dest) { throw "[AnyRPG] $dest already exists" }
+$dest = Join-Path $WorkRoot "anyturnbased-$slug"
+if (Test-Path $dest) { throw "[AnyTurnBased] $dest already exists" }
 
 New-Item -ItemType Directory -Force $dest | Out-Null
 Copy-Item (Join-Path $root 'template\core') (Join-Path $dest 'core') -Recurse
@@ -44,7 +44,7 @@ $cfg.adapter = $adapter
 $cfg | ConvertTo-Json -Depth 5 | Out-File -Encoding utf8 (Join-Path $dest 'game\game.json')
 
 @"
-# AnyRPG — $Game
+# AnyTurnBased — $Game
 
 Engine: $($fp.Engine) $($fp.Detail) · Loader: $($fp.Loader) · Adapter: $adapter
 

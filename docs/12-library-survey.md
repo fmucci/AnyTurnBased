@@ -11,7 +11,6 @@ Los motores son **observed** (archivos presentes en disco). El género y el tipo
 | Stardew Valley | MonoGame / .NET 6 (`Stardew Valley.dll`, `runtimeconfig` net6.0, `0Harmony.dll`) | SMAPI | melee en tiempo real en las minas | **Piloto.** Adapter en `template/adapters/monogame-smapi`. SMAPI no está instalado todavía (observed) |
 | Moonlighter 2 | Unity IL2CPP | BepInEx 6 IL2CPP | ARPG en tiempo real | buen caso de dungeon con salas cerradas = encuentro natural |
 | Hogwarts Legacy | Unreal (iostore) | UE4SS | acción mágica en tiempo real | caso grande de Unreal, comunidad de UE4SS activa (**documented**) |
-| Skyhill | Unity Mono (sin `UnityPlayer.dll`: Unity viejo) | BepInEx 5 | melee por apuntado, ya casi por turnos | conversión chica, buena para validar el adapter Unity Mono |
 
 ## Prioridad 2: combate en tiempo real, más trabajo
 
@@ -27,7 +26,7 @@ Los motores son **observed** (archivos presentes en disco). El género y el tipo
 
 ## Ya son por turnos (sirven de referencia o para variantes)
 
-| Juego | Motor | Uso en AnyRPG |
+| Juego | Motor | Uso en AnyTurnBased |
 |---|---|---|
 | Clair Obscur: Expedition 33 | UE5 (`SandFall-Win64-Shipping`) | referencia de UX por turnos en Unreal |
 | FINAL FANTASY IX | Unity Mono (port de Memoria) | variante: pasar de ATB a CTB puro (tipo FFX) |
@@ -35,6 +34,7 @@ Los motores son **observed** (archivos presentes en disco). El género y el tipo
 | Slay the Spire 2 | Godot .NET (`0Harmony.dll`, data_sts2) | cartas por turnos; referencia del adapter Godot .NET |
 | Balatro | LÖVE 11 (`love.dll`, `lua51.dll`) | por turnos; referencia de motores Lua (Lovely/Steamodded) |
 | Rune Dice, Into The Grid | Unity | ya por turnos |
+| Skyhill | Unity 5.5.0f3, x86, Mono perfil .NET 3.5 (**observed**) | combate por turnos con apuntado por partes del cuerpo. No es objetivo de conversión. Si algún día se usa para validar Unity viejo, el core necesita un target `net35` |
 | Dispatch | Unreal | narrativo/gestión, no aplica |
 
 ## Sin combate (fuera de alcance por ahora)

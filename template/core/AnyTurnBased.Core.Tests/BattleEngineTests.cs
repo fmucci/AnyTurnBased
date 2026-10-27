@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AnyRpg.Core;
+using AnyTurnBased.Core;
 using Xunit;
 
 public class BattleEngineTests

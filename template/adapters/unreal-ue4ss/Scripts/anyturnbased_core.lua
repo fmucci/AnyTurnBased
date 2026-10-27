@@ -1,4 +1,4 @@
--- Lua port of AnyRpg.Core (BattleEngine + Damage). Keep in sync with template/core (docs/09).
+-- Lua port of AnyTurnBased.Core (BattleEngine + Damage). Keep in sync with template/core (docs/09).
 local M = {}
 
 local TURN_COST = 10000
@@ -15,7 +15,7 @@ end
 function M.new_battle(combatants)
     local b = { all = combatants, outcome = "ongoing", log = {} }
     for _, c in ipairs(combatants) do
-        assert(c.speed and c.speed > 0, "[AnyRPG] " .. tostring(c.name) .. ": speed must be > 0")
+        assert(c.speed and c.speed > 0, "[AnyTurnBased] " .. tostring(c.name) .. ": speed must be > 0")
         c.startHp = c.hp
         c.nextTurnAt = TURN_COST // c.speed
     end
@@ -40,15 +40,15 @@ end
 
 -- action = "attack" | "defend" | "flee" | { name, power, mpCost }
 function M.execute(b, action, target)
-    assert(b.outcome == "ongoing", "[AnyRPG] battle already ended: " .. b.outcome)
+    assert(b.outcome == "ongoing", "[AnyTurnBased] battle already ended: " .. b.outcome)
     local actor = b.current
     actor.defending = false
     local msg
     if action == "attack" or type(action) == "table" then
-        assert(target and alive(target) and target.team ~= actor.team, "[AnyRPG] invalid target")
+        assert(target and alive(target) and target.team ~= actor.team, "[AnyTurnBased] invalid target")
         local power, name = 1.0, "ataca a"
         if type(action) == "table" then
-            assert(actor.mp >= action.mpCost, "[AnyRPG] not enough MP for " .. action.name)
+            assert(actor.mp >= action.mpCost, "[AnyTurnBased] not enough MP for " .. action.name)
             actor.mp = actor.mp - action.mpCost
             power, name = action.power, "usa " .. action.name .. " en"
         end
@@ -62,7 +62,7 @@ function M.execute(b, action, target)
         if math.random() < 0.6 then b.outcome = "fled" end
         msg = actor.name .. (b.outcome == "fled" and " huye" or " no pudo huir")
     else
-        error("[AnyRPG] unknown action " .. tostring(action))
+        error("[AnyTurnBased] unknown action " .. tostring(action))
     end
 
     if b.outcome == "ongoing" then

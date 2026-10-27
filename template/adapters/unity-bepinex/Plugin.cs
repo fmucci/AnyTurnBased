@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AnyRpg.Core;
+using AnyTurnBased.Core;
 using BepInEx;
 using UnityEngine;
 
-namespace AnyRpg.Unity
+namespace AnyTurnBased.Unity
 {
-    [BepInPlugin("fmucci.anyrpg", "AnyRPG", "0.1.0")]
+    [BepInPlugin("fmucci.anyturnbased", "AnyTurnBased", "0.1.0")]
     public sealed class Plugin : BaseUnityPlugin
     {
         private EncounterDirector _director;
@@ -21,7 +21,7 @@ namespace AnyRpg.Unity
             {
                 Log = Logger.LogInfo,
             };
-            Logger.LogInfo($"[AnyRPG] loaded {Application.productName} {Application.version}");
+            Logger.LogInfo($"[AnyTurnBased] loaded {Application.productName} {Application.version}");
         }
 
         private void Update()
@@ -45,10 +45,10 @@ namespace AnyRpg.Unity
         public bool CanStartEncounter => Time.timeScale > 0f; // TODO: also exclude menus/cutscenes
 
         public IReadOnlyList<Combatant> GetPlayerParty() =>
-            throw new NotImplementedException("[AnyRPG] GetPlayerParty: find the player component (docs/03)");
+            throw new NotImplementedException("[AnyTurnBased] GetPlayerParty: find the player component (docs/03)");
 
         public IReadOnlyList<Combatant> FindNearbyEnemies(float radius) =>
-            throw new NotImplementedException("[AnyRPG] FindNearbyEnemies: find the enemy component (docs/03)");
+            throw new NotImplementedException("[AnyTurnBased] FindNearbyEnemies: find the enemy component (docs/03)");
 
         public void FreezeWorld()
         {
@@ -59,10 +59,10 @@ namespace AnyRpg.Unity
         public void ResumeWorld() => Time.timeScale = _savedTimeScale;
 
         public void ApplyHp(Combatant c) =>
-            throw new NotImplementedException($"[AnyRPG] ApplyHp: write HP for {c} via the game's damage method");
+            throw new NotImplementedException($"[AnyTurnBased] ApplyHp: write HP for {c} via the game's damage method");
 
         public void Kill(Combatant c) =>
-            throw new NotImplementedException($"[AnyRPG] Kill: route {c} through the game's death method");
+            throw new NotImplementedException($"[AnyTurnBased] Kill: route {c} through the game's death method");
 
         public void PresentAction(ActionResult result) { }
         public void OnPlayerDefeated() { }

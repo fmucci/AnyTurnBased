@@ -1,11 +1,11 @@
-using AnyRpg.Core;
+using AnyTurnBased.Core;
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Monsters;
 
-namespace AnyRpg.Smapi
+namespace AnyTurnBased.Smapi
 {
     public sealed class ModEntry : Mod
     {
@@ -33,10 +33,10 @@ namespace AnyRpg.Smapi
             helper.Events.Display.RenderedHud += (_, e) => _ui.Draw(e.SpriteBatch);
             helper.Events.Input.ButtonPressed += (_, e) => _ui.OnButton(e.Button, helper.Input);
 
-            helper.ConsoleCommands.Add("anyrpg_battle", "Fuerza un encuentro con el monstruo más cercano.",
+            helper.ConsoleCommands.Add("anytb_battle", "Fuerza un encuentro con el monstruo más cercano.",
                 (_, _) => Monitor.Log(Director.TryStart() ? "battle started" : "no enemy in range", LogLevel.Info));
 
-            Monitor.Log($"[AnyRPG] loaded {_adapter.GameId} {Game1.version}", LogLevel.Info);
+            Monitor.Log($"[AnyTurnBased] loaded {_adapter.GameId} {Game1.version}", LogLevel.Info);
         }
 
         private static bool SkipWhileFrozen() => Director?.State != DirectorState.InBattle;

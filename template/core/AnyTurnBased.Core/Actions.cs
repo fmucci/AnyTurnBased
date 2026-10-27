@@ -1,6 +1,6 @@
 using System;
 
-namespace AnyRpg.Core
+namespace AnyTurnBased.Core
 {
     public enum TargetKind { Self, SingleEnemy, SingleAlly, None }
 

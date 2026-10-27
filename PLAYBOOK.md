@@ -1,4 +1,4 @@
-# PLAYBOOK - convertir un juego de PC en RPG por turnos, como agente, sin un humano
+# PLAYBOOK - pasar el combate de un juego de PC a turnos, como agente, sin un humano
 
 ## 0. Reglas que no se doblan
 
@@ -24,7 +24,7 @@
 
 ```powershell
 ./scripts/scan-steam.ps1 -Game "<carpeta en steamapps/common>"   # fingerprint (docs/02)
-./scripts/new-game.ps1   -Game "<carpeta>"                         # copia template/ a ~/work/anyrpg-<slug>
+./scripts/new-game.ps1   -Game "<carpeta>"                         # copia template/ a ~/work/anyturnbased-<slug>
 ```
 
 `new-game.ps1` escribe `game/game.json` con el motor detectado y deja solo el adapter que corresponde.
@@ -37,7 +37,7 @@ Implementá `IGameAdapter` en este orden. Cada paso tiene un log verificable.
 
 | # | Hook | Done cuando el log muestra… |
 |---|---|---|
-| 1 | Cargar el mod | `[AnyRPG] loaded <game> <version>` |
+| 1 | Cargar el mod | `[AnyTurnBased] loaded <game> <version>` |
 | 2 | `GetPlayerParty` | HP y stats del jugador, iguales a los del HUD |
 | 3 | `FindNearbyEnemies` | lista de enemigos con HP al acercarse a uno |
 | 4 | `FreezeWorld` / `ResumeWorld` | enemigos y proyectiles quietos, timers de juego quietos (`docs/07`) |

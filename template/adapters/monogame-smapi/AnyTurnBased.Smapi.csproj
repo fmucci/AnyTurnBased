@@ -3,8 +3,8 @@
   <PropertyGroup>
     <!-- Stardew Valley 1.6 runs on .NET 6 (observed: Stardew Valley.runtimeconfig.json). -->
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>AnyRpg.Smapi</AssemblyName>
-    <RootNamespace>AnyRpg.Smapi</RootNamespace>
+    <AssemblyName>AnyTurnBased.Smapi</AssemblyName>
+    <RootNamespace>AnyTurnBased.Smapi</RootNamespace>
     <LangVersion>latest</LangVersion>
     <EnableHarmony>true</EnableHarmony>
     <!-- ModBuildConfig finds the game folder and copies the mod into Mods/ on build. -->
@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\core\AnyRpg.Core\AnyRpg.Core.csproj" />
+    <ProjectReference Include="..\..\core\AnyTurnBased.Core\AnyTurnBased.Core.csproj" />
   </ItemGroup>
 
 </Project>

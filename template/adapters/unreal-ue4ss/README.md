@@ -4,7 +4,7 @@ Plantilla para juegos UE4/UE5. Ver `docs/04`.
 
 UE4SS se inyecta reemplazando `dwmapi.dll` junto a `<Game>-Win64-Shipping.exe` y carga mods en Lua desde
 `Binaries/Win64/Mods/<Mod>/Scripts/main.lua`. El core en C# no corre ahí. Este adapter es un **port en Lua**
-de `BattleEngine` y `EncounterDirector` (`Scripts/anyrpg_core.lua`), con las mismas fórmulas. Cuando se
+de `BattleEngine` y `EncounterDirector` (`Scripts/anyturnbased_core.lua`), con las mismas fórmulas. Cuando se
 cambia una fórmula en C#, se cambia también acá (`docs/09`).
 
 | Hook | Implementación habitual en Unreal |

@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AnyRpg.Core\AnyRpg.Core.csproj" />
+    <ProjectReference Include="..\AnyTurnBased.Core\AnyTurnBased.Core.csproj" />
   </ItemGroup>
 
 </Project>

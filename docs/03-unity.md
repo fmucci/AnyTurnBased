@@ -5,7 +5,7 @@
 - BepInEx 5 se instala copiando `winhttp.dll` + `BepInEx/` junto al exe (**documented**).
 - Las clases del juego están en `<Game>_Data/Managed/Assembly-CSharp.dll`. Se leen con ILSpy/dnSpy y se
   referencian directo al compilar (sin commitear la DLL).
-- `AnyRpg.Core` es netstandard2.0: carga en Unity 2018.1+ (**documented**). Skyhill usa un Unity anterior
+- `AnyTurnBased.Core` es netstandard2.0: carga en Unity 2018.1+ (**documented**). Skyhill usa un Unity anterior
   (sin `UnityPlayer.dll`, **observed**) y puede necesitar compilar el core para net35 (**unknown**).
 
 ## IL2CPP

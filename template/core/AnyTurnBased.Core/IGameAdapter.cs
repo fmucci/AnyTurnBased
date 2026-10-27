@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AnyRpg.Core
+namespace AnyTurnBased.Core
 {
     /// <summary>
     /// Everything engine-specific. One implementation per engine/game (see PLAYBOOK §3).

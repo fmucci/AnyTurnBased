@@ -1,9 +1,9 @@
 using System;
 
-namespace AnyRpg.Core
+namespace AnyTurnBased.Core
 {
     /// <summary>
-    /// Maps native values onto a common RPG scale (docs/08). Native HP is kept 1:1 so writing it
+    /// Maps native values onto a common turn-based scale (docs/08). Native HP is kept 1:1 so writing it
     /// back is exact; attack/defense/speed are normalised against the player's own values so a game
     /// where hits do 300 and one where hits do 3 both give 3-6 hits per kill.
     /// </summary>

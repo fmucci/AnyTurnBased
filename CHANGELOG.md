@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 — 2026-10-27
+
+- Renombrado de AnyRPG a **AnyTurnBased**: el proyecto pasa el combate a turnos, no convierte juegos en RPGs.
+  Namespaces `AnyTurnBased.*`, comando de debug `anytb_battle`, mod de SMAPI `fmucci.AnyTurnBased`,
+  repos por juego `anyturnbased-<slug>`.
+- `docs/12`: Skyhill pasa a "ya son por turnos" (Unity 5.5.0f3, x86, Mono .NET 3.5).
+
 ## 0.1.0 — 2026-10-27
 
 - Esqueleto inicial con el formato de AnyPS1: `docs/` 00–12, `template/`, `PLAYBOOK.md`, `scripts/`.

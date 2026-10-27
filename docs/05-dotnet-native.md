@@ -14,11 +14,11 @@
   `Farmer.health/maxHealth/buffs.Defense/Stamina`, `GameLocation.damageMonster(...)`. Que existen con esas
   firmas está **observed** (compila contra 1.6.15). Que se comporten como espera el adapter (XP y drops en
   `damageMonster`) sigue **documented** hasta PLAYBOOK §3 paso 5.
-- PLAYBOOK §3 paso 1 (el mod carga): `[AnyRPG] loaded stardew-valley 1.6.15` (**observed**).
+- PLAYBOOK §3 paso 1 (el mod carga): `[AnyTurnBased] loaded stardew-valley 1.6.15` (**observed**).
 - Congelar: un prefix de Harmony sobre `Monster.update` + `Game1.freezeControls`. El reloj del día
   sigue corriendo mientras dure la batalla (**inferred**, `docs/10`).
 
 ## Godot .NET (Slay the Spire 2)
 
 - Trae `0Harmony.dll` y `data_sts2_windows_x86_64/` (**observed**). Es Godot con C# (**inferred**).
-- Ya es por turnos. Sirve para validar que `AnyRpg.Core` carga en Godot .NET. No es objetivo de conversión.
+- Ya es por turnos. Sirve para validar que `AnyTurnBased.Core` carga en Godot .NET. No es objetivo de conversión.
