@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Stardew Valley 1.6 runs on .NET 6 (observed: Stardew Valley.runtimeconfig.json). -->
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>AnyRpg.Smapi</AssemblyName>
+    <RootNamespace>AnyRpg.Smapi</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <EnableHarmony>true</EnableHarmony>
+    <!-- ModBuildConfig finds the game folder and copies the mod into Mods/ on build. -->
+    <GamePath Condition="'$(GamePath)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley</GamePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\AnyRpg.Core\AnyRpg.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- netstandard2.0 loads in Unity Mono (2018.1+), .NET 6+ (SMAPI) and Godot .NET. -->
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <RootNamespace>AnyRpg.Core</RootNamespace>
+  </PropertyGroup>
+
+</Project>

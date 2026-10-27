@@ -1,0 +1,17 @@
+# Game data never goes in git (PLAYBOOK §0.1)
+game-files/
+work/
+build/
+dist/
+*.pak
+*.utoc
+*.ucas
+
+# .NET
+bin/
+obj/
+*.user
+.vs/
+
+# Loader output
+BepInEx/interop/

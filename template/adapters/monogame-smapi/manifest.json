@@ -1,0 +1,9 @@
+{
+  "Name": "AnyRPG",
+  "Author": "fmucci",
+  "Version": "0.1.0",
+  "Description": "Convierte el combate de las minas en batallas por turnos.",
+  "UniqueID": "fmucci.AnyRPG",
+  "EntryDll": "AnyRpg.Smapi.dll",
+  "MinimumApiVersion": "4.0.0"
+}

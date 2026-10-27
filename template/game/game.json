@@ -1,0 +1,14 @@
+{
+  "name": "TODO",
+  "slug": "todo",
+  "installPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\TODO",
+  "engine": "unity-mono | unity-il2cpp | unreal | monogame | godot-dotnet | love | re-engine",
+  "loader": "bepinex5 | bepinex6-il2cpp | ue4ss | smapi | lovely | reframework",
+  "adapter": "unity-bepinex | unreal-ue4ss | monogame-smapi",
+  "encounterRadius": 5.0,
+  "classes": {
+    "player": "TODO",
+    "enemy": "TODO",
+    "health": "TODO"
+  }
+}
